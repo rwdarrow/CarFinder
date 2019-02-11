@@ -4,4 +4,8 @@
     <string name="add_icon_text">Save vehicle location</string>
     <string name="save_location_toast">Vehicle location saved</string>
     <string name="note_dialog_title">Enter Note</string>
+    <string name="save">Save</string>
+    <string name="photo_desc">Photo from camera</string>
+    <string name="photo_saved">Photo saved.</string>
+    <string name="photo_not_saved">Problem saving the photo.</string>
 </resources>

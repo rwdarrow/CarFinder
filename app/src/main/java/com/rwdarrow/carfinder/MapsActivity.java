@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,7 +49,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
-    private TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +56,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         final View mFabNote = findViewById(R.id.addNoteBtn);
-        resultText = (TextView) findViewById(R.id.result);
 
         // initialize saved car location
         sp = getSharedPreferences("carLocation", Context.MODE_PRIVATE);
