@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Find My Car</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Find My Car</string>
     <string name="add_icon_text">Save vehicle location</string>
     <string name="save_location_toast">Vehicle location saved</string>
+    <string name="note_dialog_title">Enter Note</string>
 </resources>
