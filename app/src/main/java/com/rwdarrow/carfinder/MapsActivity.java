@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,12 +43,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final float ZOOM_LEVEL = 17f;
     private final int UPDATE_INTERVAL = 500;
     private final int FAST_UPDATE_INTERVAL = 100;
+    private String carName;
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mClient;
     private LocationRequest mLocationRequest;
     private LatLng currentLocationLatLng;
     private Toast mLocationNotification;
+    private Marker marker;
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -61,6 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // initialize saved car location
         sp = getSharedPreferences("carLocation", Context.MODE_PRIVATE);
         editor = sp.edit();
+
+        ImageButton mSettingsBtn = findViewById(R.id.settingsBtn);
+        mSettingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = SettingsActivity.makeIntent(MapsActivity.this);
+                startActivity(intent);
+            }
+        });
 
         FloatingActionButton mFabSave = findViewById(R.id.saveLocationBtn);
         mFabSave.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // if it has, display saved location on map
         if (locationIsSaved) {
-            mMap.addMarker(new MarkerOptions().title("Car Location")
+            marker = mMap.addMarker(new MarkerOptions().title(getSavedCarName())
                     .position(new LatLng(sp.getFloat("LAT", 0),
                             sp.getFloat("LONG", 0))));
 
@@ -182,6 +195,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             mMap.setMyLocationEnabled(true);
         }
+    }
+
+    private String getSavedCarName() {
+        return SettingsActivity.getCarName(this);
     }
 
     public void getLocation() {
@@ -230,5 +247,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean toggleSaveLocation() {
         return !locationIsSaved;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (marker != null) {
+            marker.setTitle(getSavedCarName());
+        }
     }
 }
